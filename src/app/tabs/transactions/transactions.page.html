@@ -16,8 +16,10 @@
   <ion-list [inset]="true">
     @for (transaction of $transactions | async; track $index) {
       <ion-item>
+        <ion-icon color="success" *ngIf="transaction.type === 'income'" name="add-outline"></ion-icon>
+        <ion-icon color="danger" *ngIf="transaction.type === 'expense'" name="remove-outline"></ion-icon>
         <ion-label>
-          {{ transaction.date }} - EUR {{ transaction.amount }} - {{ transaction.type }}
+          {{ transaction.description }} - EUR {{ transaction.amount }}
         </ion-label>
       </ion-item>
     }
