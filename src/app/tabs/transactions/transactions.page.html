@@ -25,3 +25,13 @@
     }
   </ion-list>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button id="open-action-sheet" slot="end" color="primary" shape="round" (click)="addTransactions()">
+      <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>
+
+<ion-action-sheet (didDismiss)="actionPicked($event)" trigger="open-action-sheet" header="Actions" [buttons]="actionSheetButtons"></ion-action-sheet>

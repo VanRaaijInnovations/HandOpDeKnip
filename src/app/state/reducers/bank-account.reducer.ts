@@ -4,15 +4,13 @@ import { IBankAccount } from "../../interfaces/bank-account.interface";
 
 export const initialState: IBankAccount[] = [{
       id: '1',
-      name: 'Bank Account 1',
-      iban: 'NL91ABNA0417164300',
-      bic: 'ABNANL2A'
+      name: 'NLL van RAaij',
+      iban: 'NL57ABNA0117240524'
     },
     {
       id: '2',
       name: 'Bank Account 2',
-      iban: 'NL91ABNA0417164301',
-      bic: 'ABNANL2B'
+      iban: 'NL91ABNA0417164301'
     }];
 
 export const bankAccountReducer = createReducer(
