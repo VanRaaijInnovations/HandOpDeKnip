@@ -17,9 +17,9 @@
     </ion-item>
     
     <ion-item>
-      <ion-select label="Currency" value="eur" interface="popover" placeholder="Select currency">
-      <ion-select-option value="eur">EUR (€)</ion-select-option>
-      <ion-select-option value="usd">USD ($)</ion-select-option>
+      <ion-select (ionChange)="saveCurrency($event)" label="Currency" [value]="currency" interface="popover" placeholder="Select currency">
+      <ion-select-option value="EUR">EUR (€)</ion-select-option>
+      <ion-select-option value="USD">USD ($)</ion-select-option>
     </ion-select>
     </ion-item>
   </ion-list>

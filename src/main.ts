@@ -11,6 +11,7 @@ import { bankAccountReducer } from './app/state/reducers/bank-account.reducer';
 import { provideRouterStore } from '@ngrx/router-store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { transactionReducer } from './app/state/reducers/transaction.reducer';
+import { settingsReducer } from './app/state/reducers/settings.reducer';
 
 defineCustomElements(window);
 
@@ -21,7 +22,8 @@ bootstrapApplication(AppComponent, {
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideStore({
         bankAccounts: bankAccountReducer,
-        transactions: transactionReducer
+        transactions: transactionReducer,
+        settings: settingsReducer
     }),
     provideRouterStore(),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() })

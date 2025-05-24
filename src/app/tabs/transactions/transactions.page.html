@@ -19,7 +19,7 @@
         <ion-icon color="success" *ngIf="transaction.type === 'income'" name="add-outline"></ion-icon>
         <ion-icon color="danger" *ngIf="transaction.type === 'expense'" name="remove-outline"></ion-icon>
         <ion-label>
-          {{ transaction.description }} - EUR {{ transaction.amount }}
+          {{ transaction.description }} - {{ transaction.amount | currency: 'EUR' }}
         </ion-label>
       </ion-item>
     }
