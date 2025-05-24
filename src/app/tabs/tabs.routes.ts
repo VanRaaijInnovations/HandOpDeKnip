@@ -20,15 +20,17 @@ export const routes: Routes = [
         path: 'settings',
         loadComponent: () =>
           import('./settings/settings.page').then((m) => m.SettingsPage),
-        children: [
-          {
-            path: 'bank-accounts',
-            loadComponent: () =>
-              import('./settings/pages/bank-accounts/bank-accounts.page').then(
-                (m) => m.BankAccountsPage
-              ),
-          }
-        ]
+      },
+      {
+        path: 'settings/bank-accounts',
+        loadComponent: () =>
+          import('./settings/pages/bank-accounts/bank-accounts.page').then(
+            (m) => m.BankAccountsPage
+          ),
+      },
+      {
+        path: 'settings/bank-accounts/add-new-bank-account',
+        loadComponent: () => import('./settings/pages/bank-accounts/add-new-bank-account/add-new-bank-account.page').then( m => m.AddNewBankAccountPage)
       },
       {
         path: '',
@@ -41,5 +43,5 @@ export const routes: Routes = [
     path: '',
     redirectTo: '/tabs/overview',
     pathMatch: 'full',
-  }
+  },
 ];

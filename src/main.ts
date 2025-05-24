@@ -5,6 +5,12 @@ import { defineCustomElements } from '@ionic/pwa-elements/loader';
 
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
+import { provideStore, StoreModule } from '@ngrx/store';
+import { importProvidersFrom, isDevMode } from '@angular/core';
+import { bankAccountReducer } from './app/state/reducers/bank-account.reducer';
+import { provideRouterStore } from '@ngrx/router-store';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { transactionReducer } from './app/state/reducers/transaction.reducer';
 
 defineCustomElements(window);
 
@@ -13,5 +19,11 @@ bootstrapApplication(AppComponent, {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
-  ],
+    provideStore({
+        bankAccounts: bankAccountReducer,
+        transactions: transactionReducer
+    }),
+    provideRouterStore(),
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() })
+  ] 
 });
