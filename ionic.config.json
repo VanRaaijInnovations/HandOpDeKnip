@@ -1,0 +1,7 @@
+{
+  "name": "HandOpDeKnipApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
