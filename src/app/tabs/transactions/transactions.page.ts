@@ -26,8 +26,9 @@ import { addIcons } from 'ionicons';
 import { addOutline, removeOutline } from 'ionicons/icons';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
 import type { OverlayEventDetail } from '@ionic/core';
-import { Buffer } from 'buffer';
-import { ISettings } from 'src/app/interfaces/settings.interface.js';
+import { ISettings } from 'src/app/interfaces/settings.interface';
+import { TransactionsService } from 'src/app/services/transactions.service';
+import { ITransactionsState } from 'src/app/interfaces/transactions-state.interface.js';
 
 @Component({
   selector: 'app-transactions',
@@ -54,6 +55,7 @@ import { ISettings } from 'src/app/interfaces/settings.interface.js';
     IonDatetime
   ],
 })
+
 export class TransactionsPage {
   public actionSheetButtons = [
     {
@@ -79,22 +81,15 @@ export class TransactionsPage {
   $transactions: Observable<ITransaction[]>;
 
   constructor(
-    private store: Store<{ transactions: ITransaction[]; settings: ISettings }>
+    private store: Store<{ transactions: ITransactionsState; settings: ISettings }>,
+    private transactionsService: TransactionsService
   ) {
     addIcons({ addOutline, removeOutline });
-    this.store.select('settings').subscribe((settings) => {
+    this.store.select(state => state.settings).subscribe((settings) => {
       this.currency = settings.currency;
     });
-    this.$transactions = this.store.select('transactions');
-  }
 
-  decodeBase64(str: string): string {
-    try {
-      return Buffer.from(str, 'base64').toString('binary');
-    } catch (e) {
-      console.error('Error decoding base64 string:', e);
-      return str; // Return the original string if decoding fails
-    }
+    this.$transactions = this.store.select(state => state.transactions.transactions);
   }
 
   actionPicked(event: CustomEvent<OverlayEventDetail>): void {
@@ -115,15 +110,12 @@ export class TransactionsPage {
         limit: 1,
         readData: true,
       });
-      if (result.files && result.files.length > 0) {
-        const file = result.files[0];
-        // TODO: Process the CSV file here (file.name, file.path, file.mimeType, file.data)
-        console.log('Selected file:', file);
 
-        if (file.data) {
-          const decodedData = this.decodeBase64(file.data);
-          console.log('Decoded file data:', decodedData);
-        }
+      let transactions = await this.transactionsService.importTransactions(result);
+      if (transactions && transactions.length > 0) {
+        this.store.dispatch({ type: '[Transaction] Add Transactions', transactions });
+      } else {
+        console.warn('No transactions were imported.');
       }
     } catch (error: any) {
       if (error && error.message !== 'User cancelled') {
@@ -134,7 +126,7 @@ export class TransactionsPage {
 
   updateStartDate(event: CustomEvent): void {
     this.startDate = event.detail.value;
-    this.$transactions = this.store.select('transactions').pipe(
+    this.$transactions = this.store.select(state => state.transactions.transactions).pipe(
       map(transactions =>
         transactions.filter(transaction => {
           const transactionDate = new Date(transaction.date);
@@ -146,7 +138,7 @@ export class TransactionsPage {
 
   updateEndDate(event: CustomEvent): void {
     this.endDate = event.detail.value;
-    this.$transactions = this.store.select('transactions').pipe(
+    this.$transactions = this.store.select(state => state.transactions.transactions).pipe(
       map(transactions =>
         transactions.filter(transaction => {
           const transactionDate = new Date(transaction.date);

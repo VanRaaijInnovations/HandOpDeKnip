@@ -5,8 +5,8 @@ export interface ITransaction {
     date: Date;
     amount: number;
     description: string;
-    category: string;
-    fromBankAccountIban: string;
-    toBankAccountIban: string;
+    category?: string;
+    fromBankAccountIban?: string;
+    toBankAccountIban?: string;
     type: TransactionType;
 }
