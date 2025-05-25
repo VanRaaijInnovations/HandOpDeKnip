@@ -12,14 +12,13 @@ import { Observable } from 'rxjs';
   imports: [IonHeader, IonToolbar, IonTitle, IonList, IonItem, IonLabel, IonContent, IonSelect, IonSelectOption],
 })
 export class SettingsPage {
-  currency: Observable<string>;
+  $currency: Observable<string>;
 
   constructor(
     private router: Router,
     private store: Store<{ settings: ISettings }>
   ) {
-  
-    this.currency = this.store.select(state => state.settings.currency);
+    this.$currency = this.store.select(state => state.settings.currency);
   }
 
   saveCurrency(event: CustomEvent): void {

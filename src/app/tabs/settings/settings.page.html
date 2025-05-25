@@ -15,9 +15,9 @@
     <ion-item (click)="openPage('tabs/settings/bank-accounts')">
       <ion-label>Connected bank accounts</ion-label>
     </ion-item>
-    
+
     <ion-item>
-      <ion-select (ionChange)="saveCurrency($event)" label="Currency" [value]="currency" interface="popover" placeholder="Select currency">
+      <ion-select (ionChange)="saveCurrency($event)" label="Currency" [value]="$currency" interface="popover" placeholder="Select currency">
       <ion-select-option value="EUR">EUR (€)</ion-select-option>
       <ion-select-option value="USD">USD ($)</ion-select-option>
     </ion-select>

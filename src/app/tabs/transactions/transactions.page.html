@@ -3,6 +3,14 @@
     <ion-title>
       Transactions
     </ion-title>
+    <ion-progress-bar *ngIf="loading" type="indeterminate"></ion-progress-bar>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar></ion-searchbar>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-datetime-button slot="start" datetime="datetime-start"></ion-datetime-button>
+    <ion-datetime-button slot="end" datetime="datetime-end"></ion-datetime-button>
   </ion-toolbar>
 </ion-header>
 
@@ -16,10 +24,12 @@
   <ion-list [inset]="true">
     @for (transaction of $transactions | async; track $index) {
       <ion-item>
-        <ion-icon color="success" *ngIf="transaction.type === 'income'" name="add-outline"></ion-icon>
-        <ion-icon color="danger" *ngIf="transaction.type === 'expense'" name="remove-outline"></ion-icon>
         <ion-label>
-          {{ transaction.description }} - {{ transaction.amount | currency: 'EUR' }}
+          <ion-text>
+            <ion-text color="danger" *ngIf="transaction.type === 'expense'"> - {{ transaction.amount | currency: currency }}</ion-text>
+            <ion-text color="success" *ngIf="transaction.type === 'income'"> + {{ transaction.amount | currency: currency }}</ion-text>
+            {{ transaction.description }}
+          </ion-text>
         </ion-label>
       </ion-item>
     }
@@ -35,3 +45,49 @@
 </ion-footer>
 
 <ion-action-sheet (didDismiss)="actionPicked($event)" trigger="open-action-sheet" header="Actions" [buttons]="actionSheetButtons"></ion-action-sheet>
+
+<ion-modal [keepContentsMounted]="true">
+  <ng-template>
+    <ion-datetime
+    id="datetime-start"
+    hourCycle="h24"
+    presentation="date"
+    [value]="startDate"
+    (ionChange)="updateStartDate($event)"
+    [formatOptions]="{
+        date: {
+          weekday: 'short',
+          month: 'short',
+          day: '2-digit',
+        },
+        time: {
+          hour: '2-digit',
+          minute: '2-digit',
+        },
+      }"
+    ></ion-datetime>
+  </ng-template>
+</ion-modal>
+
+<ion-modal [keepContentsMounted]="true">
+  <ng-template>
+    <ion-datetime
+    id="datetime-end"
+    hourCycle="h24"
+    [value]="endDate"
+    presentation="date"
+    (ionChange)="updateEndDate($event)"
+    [formatOptions]="{
+        date: {
+          weekday: 'short',
+          month: 'short',
+          day: '2-digit',
+        },
+        time: {
+          hour: '2-digit',
+          minute: '2-digit',
+        },
+      }"
+    ></ion-datetime>
+  </ng-template>
+</ion-modal>
