@@ -1,0 +1,15 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Transaction</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label>
+        Date: {{ transaction?.date| date: 'short' }}
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

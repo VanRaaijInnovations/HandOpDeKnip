@@ -17,6 +17,10 @@ export const routes: Routes = [
           import('./transactions/transactions.page').then((m) => m.TransactionsPage),
       },
       {
+        path: 'transactions/view',
+        loadComponent: () => import('./transactions/pages/transaction-view/transaction-view.page').then( m => m.TransactionViewPage)
+      },
+      {
         path: 'settings',
         loadComponent: () =>
           import('./settings/settings.page').then((m) => m.SettingsPage),

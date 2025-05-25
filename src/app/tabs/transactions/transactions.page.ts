@@ -29,6 +29,7 @@ import type { OverlayEventDetail } from '@ionic/core';
 import { ISettings } from 'src/app/interfaces/settings.interface';
 import { TransactionsService } from 'src/app/services/transactions.service';
 import { ITransactionsState } from 'src/app/interfaces/transactions-state.interface.js';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-transactions',
@@ -82,7 +83,8 @@ export class TransactionsPage {
 
   constructor(
     private store: Store<{ transactions: ITransactionsState; settings: ISettings }>,
-    private transactionsService: TransactionsService
+    private transactionsService: TransactionsService,
+    private router: Router
   ) {
     addIcons({ addOutline, removeOutline });
     this.store.select(state => state.settings).subscribe((settings) => {
@@ -146,5 +148,11 @@ export class TransactionsPage {
         })
       )
     );
+  }
+
+  viewTransaction(transaction: string): void {
+    this.router.navigate(['/tabs/transactions/view'], {
+      queryParams: { transactionId: transaction }
+    });
   }
 }

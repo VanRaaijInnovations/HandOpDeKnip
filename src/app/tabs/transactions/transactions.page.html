@@ -17,7 +17,7 @@
 <ion-content>
   <ion-list [inset]="true">
     @for (transaction of $transactions | async; track $index) {
-      <ion-item>
+      <ion-item (click)="viewTransaction(transaction.id)">
         <ion-label>
           <ion-text>
             <ion-text color="danger" *ngIf="transaction.type === 'expense'"> - {{ transaction.amount | currency: currency }}</ion-text>
