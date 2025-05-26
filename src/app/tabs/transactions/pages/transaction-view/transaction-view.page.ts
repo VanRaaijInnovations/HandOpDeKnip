@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonItem, IonLabel } from '@ionic/angular/standalone';
 import { ActivatedRoute } from '@angular/router';
@@ -7,6 +7,10 @@ import { Observable } from 'rxjs';
 import { ITransaction } from 'src/app/interfaces/transaction.interface';
 import { select, Store } from '@ngrx/store';
 import { ITransactionsState } from 'src/app/interfaces/transactions-state.interface';
+import { ISettings } from 'src/app/interfaces/settings.interface.js';
+import localeNl from '@angular/common/locales/nl';
+
+registerLocaleData(localeNl, 'nl-NL');
 
 @Component({
   selector: 'app-transaction-view',
@@ -17,19 +21,28 @@ import { ITransactionsState } from 'src/app/interfaces/transactions-state.interf
 })
 export class TransactionViewPage implements OnInit {
 
-  transaction?: ITransaction
+  $transaction?: Observable<ITransaction | undefined>;
 
   constructor(
     private route: ActivatedRoute,
-    private store: Store<{ transactionsState: ITransactionsState }>,
+    private store: Store<{   transactions: ITransactionsState, settings: ISettings }>,
   ) {
-    
   }
 
   ngOnInit() {
-    const transactionId = this.route.snapshot.paramMap.get('id');
-    this.store.select(state => state.transactionsState).subscribe(transactionsState => {
-      this.transaction = transactionsState.transactions.find(t => t.id === transactionId);
+    this.route.queryParamMap.subscribe(params => {
+      const transactionId = params.get('transactionId');
+      this.$transaction = this.store.select(state => state.transactions.transactions.find(transaction => transaction.id === transactionId));
     });
+  }
+
+  getCurrency(): string {
+    let currency: string = 'EUR'; // Default currency
+    this.store.select(state => state.settings).subscribe(settings => {
+      if (settings && settings.currency) {
+        currency = settings.currency;
+      }
+    });
+    return currency;
   }
 }
