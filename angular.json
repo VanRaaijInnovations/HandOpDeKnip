@@ -18,6 +18,9 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "allowedCommonJsDependencies": [
+              "crypto"
+            ],
             "outputPath": {
               "base": "www",
               "browser": ""

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { PickFilesResult } from '@capawesome/capacitor-file-picker';
-import { Buffer } from 'buffer';
 import { ITransaction } from '../interfaces/transaction.interface';
 import { v4 as uuidv4 } from 'uuid';
 
