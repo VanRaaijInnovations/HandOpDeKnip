@@ -24,15 +24,25 @@ export class AuthenticatePage {
     private router: Router
   ) { }
 
+  randomString(length: number) {
+    var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var result = '';
+    for ( var i = 0; i < length; i++ ) {
+        result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+    }
+    return result;
+  }
+
   async savePassword(event: CustomEvent): Promise<void> {
-    const salt = 'my little pony';
+    const salt = "my little pony"  //TODO: make this random -> this.randomString(128);
     const hash = PBKDF2(event.detail.value, salt, {
-      iterations: 10
+      iterations: 100
     }).toString();
 
     this.store.dispatch({
       type: '[Settings] Set Private Key Password',
-      privateKeyPassword: hash
+      privateKeyPassword: hash,
+      salt
     });
 
     this.router.navigate(['tabs'])

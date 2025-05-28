@@ -13,5 +13,5 @@ export const updateCurrency = createAction(
 
 export const setPrivateKeyPassword = createAction(
   '[Settings] Set Private Key Password',
-  props<{ privateKeyPassword: string }>()
+  props<{ privateKeyPassword: string, salt: string }>()
 );

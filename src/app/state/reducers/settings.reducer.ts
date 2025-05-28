@@ -5,6 +5,7 @@ import * as SettingsActions from '../actions/settings.actions';
 export const initialSettingsState: ISettings = {
   currency: 'EUR',
   privateKeyPassword: undefined,
+  salt: undefined
 };
 
 export const settingsReducer = createReducer(
@@ -14,8 +15,9 @@ export const settingsReducer = createReducer(
     ...state,
     currency: currency.currency
   })),
-  on(SettingsActions.setPrivateKeyPassword, (state, { privateKeyPassword }) => ({
+  on(SettingsActions.setPrivateKeyPassword, (state, { privateKeyPassword, salt }) => ({
     ...state,
-    privateKeyPassword
-  }))
+    privateKeyPassword,
+    salt
+  })),
 )
