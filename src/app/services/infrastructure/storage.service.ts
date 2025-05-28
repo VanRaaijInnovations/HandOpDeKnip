@@ -14,7 +14,6 @@ export class StorageService {
         console.warn('Public storage permissions denied, requesting permissions...');
         Filesystem.requestPermissions();
       } else {
-        // Create the app directory if it doesn't exist
         Filesystem.mkdir({
           directory: Directory.Data,
           recursive: true,
@@ -23,7 +22,7 @@ export class StorageService {
           console.log('App directory created successfully:', this.AppDir);
         }).catch((error) => {
           if (error.name !== 'AlreadyExistsError') {  // Ignore if the directory already exists
-            console.error('Error creating app directory:', error);
+            console.warn('Error creating app directory:', error);
           }
         });
 
@@ -46,7 +45,34 @@ export class StorageService {
       console.log('State saved successfully:', res);
     } catch (error) {
       console.error('Error saving state:', error);
-      throw error;
+      return;
+    }
+  }
+
+  async loadState<Type>(fileName: string): Promise<Type | null> {
+    try {
+      let res = await Filesystem.readFile({
+        directory: Directory.Data,
+        path: `${this.AppDir}/${fileName}.json`,
+        encoding: Encoding.UTF8
+      })
+
+      return JSON.parse(res.data as string) as Type;
+    } catch (error) {
+      console.error('Error loading state:', error);
+      return null;
+    }
+  }
+
+  async clearStorage(): Promise<void> {
+    try {
+      await Filesystem.rmdir({
+        directory: Directory.Data,
+        path: this.AppDir,
+        recursive: true
+      })
+    } catch (error) {
+      console.error('Error clearing storage:', error);
     }
   }
 }

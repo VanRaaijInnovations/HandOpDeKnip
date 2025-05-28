@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ISettings } from 'src/app/interfaces/settings.interface';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { StorageService } from 'src/app/services/infrastructure/storage.service.js';
 
 @Component({
   selector: 'app-settings',
@@ -16,7 +17,8 @@ export class SettingsPage {
 
   constructor(
     private router: Router,
-    private store: Store<{ settings: ISettings }>
+    private store: Store<{ settings: ISettings }>,
+    private storageService: StorageService
   ) {
     this.$currency = this.store.select(state => state.settings.currency);
   }
@@ -30,5 +32,9 @@ export class SettingsPage {
 
   openPage(page: string): void {
     this.router.navigate([`${page}`]);
+  }
+
+  async clearStorage(): Promise<void> {
+    await this.storageService.clearStorage();
   }
 }

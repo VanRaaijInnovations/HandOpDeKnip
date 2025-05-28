@@ -92,8 +92,14 @@ export class TransactionsPage {
     this.store.select(state => state.settings).subscribe((settings) => {
       this.currency = settings.currency;
     });
-
     this.$transactions = this.store.select(state => state.transactions.transactions);
+  }
+
+  async ngOnInit(): Promise<void> {
+    const transactions = await this.storageService.loadState<ITransaction[]>('transactions');
+    if (transactions && transactions.length > 0) {
+      this.store.dispatch({ type: '[Transaction] Add Transactions', transactions });
+    }
   }
 
   actionPicked(event: CustomEvent<OverlayEventDetail>): void {
