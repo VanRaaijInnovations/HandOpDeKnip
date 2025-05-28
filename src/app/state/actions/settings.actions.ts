@@ -10,3 +10,8 @@ export const updateCurrency = createAction(
   '[Settings] Update Currency',
   props<{ currency: string }>()
 );
+
+export const setPrivateKeyPassword = createAction(
+  '[Settings] Set Private Key Password',
+  props<{ privateKeyPassword: string }>()
+);
