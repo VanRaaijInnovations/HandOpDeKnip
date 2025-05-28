@@ -24,15 +24,6 @@ export class AuthenticatePage {
     private router: Router
   ) { }
 
-  randomString(length: number) {
-    var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var result = '';
-    for ( var i = 0; i < length; i++ ) {
-        result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
-    }
-    return result;
-  }
-
   async savePassword(event: CustomEvent): Promise<void> {
     const salt = 'my little pony';
     const hash = PBKDF2(event.detail.value, salt, {
