@@ -71,8 +71,6 @@ export class StorageService {
         encoding: Encoding.UTF8
       })
 
-      console.log(encryptedData.data);
-
       const passwordHash = await firstValueFrom(this.store.select(state => state.settings.privateKeyPassword));
 
       if (!passwordHash) {
