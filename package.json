@@ -1,8 +1,8 @@
 {
-  "name": "HandOpDeKnipApp",
+  "name": "hand-op-de-knip",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "author": "Van Raaij Innovations",
+  "homepage": "https://varain.nl",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -22,12 +22,11 @@
     "@angular/platform-browser-dynamic": "^19.0.0",
     "@angular/router": "^19.0.0",
     "@capacitor-community/electron": "^5.0.1",
-    "@capacitor-community/sqlite": "^7.0.0",
     "@capacitor/android": "^7.2.0",
     "@capacitor/app": "7.0.1",
     "@capacitor/camera": "^7.0.1",
     "@capacitor/core": "7.2.0",
-    "@capacitor/filesystem": "^7.0.1",
+    "@capacitor/filesystem": "^7.1.1",
     "@capacitor/haptics": "7.0.1",
     "@capacitor/ios": "7.2.0",
     "@capacitor/keyboard": "7.0.1",
@@ -39,6 +38,7 @@
     "@ngrx/router-store": "^19.2.0",
     "@ngrx/store": "^19.2.0",
     "@ngrx/store-devtools": "^19.2.0",
+    "crypto-js": "^4.2.0",
     "ionicons": "^7.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
@@ -59,6 +59,7 @@
     "@capacitor/cli": "7.2.0",
     "@ionic/angular-toolkit": "^12.0.0",
     "@ngrx/eslint-plugin": "^19.2.0",
+    "@types/crypto-js": "^4.2.2",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^22.15.21",
     "@typescript-eslint/eslint-plugin": "^8.18.0",
@@ -76,5 +77,5 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.6.3"
   },
-  "description": "An Ionic project"
+  "description": "Financial support open and free."
 }

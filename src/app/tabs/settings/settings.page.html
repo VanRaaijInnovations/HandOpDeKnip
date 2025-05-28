@@ -12,9 +12,12 @@
 
     <ion-item>
       <ion-select (ionChange)="saveCurrency($event)" label="Currency" [value]="$currency" interface="popover" placeholder="Select currency">
-      <ion-select-option value="EUR">EUR (€)</ion-select-option>
-      <ion-select-option value="USD">USD ($)</ion-select-option>
-    </ion-select>
+        <ion-select-option value="EUR">EUR (€)</ion-select-option>
+        <ion-select-option value="USD">USD ($)</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item (click)="clearStorage()">
+      <ion-label>Clear storage</ion-label>
     </ion-item>
   </ion-list>
 

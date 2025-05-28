@@ -30,6 +30,7 @@ import { ISettings } from 'src/app/interfaces/settings.interface';
 import { TransactionsService } from 'src/app/services/transactions.service';
 import { ITransactionsState } from 'src/app/interfaces/transactions-state.interface.js';
 import { Router } from '@angular/router';
+import { StorageService } from 'src/app/services/infrastructure/storage.service.js';
 
 @Component({
   selector: 'app-transactions',
@@ -84,14 +85,21 @@ export class TransactionsPage {
   constructor(
     private store: Store<{ transactions: ITransactionsState; settings: ISettings }>,
     private transactionsService: TransactionsService,
-    private router: Router
+    private router: Router,
+    private storageService: StorageService
   ) {
     addIcons({ addOutline, removeOutline });
     this.store.select(state => state.settings).subscribe((settings) => {
       this.currency = settings.currency;
     });
-
     this.$transactions = this.store.select(state => state.transactions.transactions);
+  }
+
+  async ngOnInit(): Promise<void> {
+    const transactions = await this.storageService.loadState<ITransaction[]>('transactions');
+    if (transactions && transactions.length > 0) {
+      this.store.dispatch({ type: '[Transaction] Add Transactions', transactions });
+    }
   }
 
   actionPicked(event: CustomEvent<OverlayEventDetail>): void {
@@ -116,6 +124,7 @@ export class TransactionsPage {
       let transactions = await this.transactionsService.importTransactions(result);
       if (transactions && transactions.length > 0) {
         this.store.dispatch({ type: '[Transaction] Add Transactions', transactions });
+        await this.storageService.saveState(transactions, 'transactions');
       } else {
         console.warn('No transactions were imported.');
       }

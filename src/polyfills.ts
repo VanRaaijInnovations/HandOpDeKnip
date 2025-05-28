@@ -53,3 +53,8 @@ import 'zone.js';  // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+
+// This import is needed for the Buffer polyfill to work correctly in Angular
+import { Buffer } from 'buffer';
+// Assign Buffer to the global object
+(window as any).Buffer = Buffer;

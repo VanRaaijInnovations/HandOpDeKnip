@@ -14,6 +14,7 @@ import { provideRouterStore } from '@ngrx/router-store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { transactionReducer } from './app/state/reducers/transaction.reducer';
 import { settingsReducer } from './app/state/reducers/settings.reducer';
+import { PasswordGuard } from './app/guards/password.guard.js';
 
 defineCustomElements(window);
 
@@ -29,6 +30,7 @@ bootstrapApplication(AppComponent, {
         settings: settingsReducer
     }),
     provideRouterStore(),
-    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() })
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
+    { provide: PasswordGuard }
   ]
 });

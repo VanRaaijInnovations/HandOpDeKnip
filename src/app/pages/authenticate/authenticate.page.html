@@ -1,0 +1,11 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Input password</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-input (ionChange)="savePassword($event)" type="password" label="Password" value="">
+    <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+  </ion-input>
+</ion-content>
