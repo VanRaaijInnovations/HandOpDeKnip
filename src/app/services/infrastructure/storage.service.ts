@@ -28,7 +28,7 @@ export class StorageService {
           console.debug('App directory created successfully:', this.AppDir);
         }).catch((error) => {
           if (error.name !== 'AlreadyExistsError') {  // Ignore if the directory already exists
-            console.warn('Error creating app directory:', error);
+            console.info('App directory already exists:', this.AppDir);
           }
         });
 
@@ -79,7 +79,7 @@ export class StorageService {
       console.debug(`Fetched ${fileName}:`, decryptedData)
       return JSON.parse(decryptedData) as Type;
     } catch (error) {
-      console.error('Error loading state:', error);
+      console.warn('loading state:', error);
       return;
     }
   }
