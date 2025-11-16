@@ -42,7 +42,7 @@ jobs:
       id: code-coverage-summary
       uses: irongut/CodeCoverageSummary@v1.3.0
       with:
-        filename: '**/coverage/lcov.info'
+        filename: 'coverage/**/coverage.cobertura.xml'
         fail_below_min: true
         format: markdown
         hide_branch_rate: false
