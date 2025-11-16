@@ -25,13 +25,13 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      type: 'cobertura',
       dir: require('path').join(__dirname, './coverage/app'),
       subdir: '.',
       reporters: [
         { type: 'html' },
         { type: 'text-summary' },
-        { type: 'lcovonly' }
+        { type: 'lcovonly' },
+        { type: 'cobertura' }
       ]
     },
     reporters: ['progress', 'kjhtml'],
