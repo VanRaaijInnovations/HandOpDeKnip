@@ -39,7 +39,7 @@ jobs:
     - name: Upload coverage reports
       uses: codecov/codecov-action@v5
       with:
-        files: ./HandOpDeKnipApp/coverage/lcov.info
+        files: ./coverage/lcov.info
         flags: unittests
         name: codecov-umbrella
       if: always()
