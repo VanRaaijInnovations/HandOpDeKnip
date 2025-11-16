@@ -33,7 +33,7 @@ jobs:
       if: always()
 
     - name: Run tests
-      run: npm test -- --watch=false --code-coverage
+      run: npm test -- --watch=false --code-coverage --browsers=ChromeHeadless
       if: always()
       env:
         CI: true
