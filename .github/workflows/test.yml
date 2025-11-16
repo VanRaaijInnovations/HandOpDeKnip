@@ -30,6 +30,7 @@ jobs:
 
     - name: Run tests
       run: npm test -- --watch=false --code-coverage
+      if: always()
 
     - name: Upload coverage reports
       uses: codecov/codecov-action@v5
