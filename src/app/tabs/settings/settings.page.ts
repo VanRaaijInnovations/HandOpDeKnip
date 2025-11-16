@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonSelect, IonSelectOption } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
-import { ISettings } from 'src/app/interfaces/settings.interface';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { StorageService } from 'src/app/services/infrastructure/storage.service.js';
@@ -24,8 +23,19 @@ export class SettingsPage {
     this.$currency = this.store.select(SettingsSelectors.selectCurrency);
   }
 
+  async ngOnInit() {
+    const currency = await this.storageService.loadState<string>('settings/currency');
+
+    console.log('Loaded currency from storage:', currency);
+
+    if (currency) { 
+      this.store.dispatch(SettingsActions.updateCurrency({ currency: currency }));
+    }
+  }
+
   saveCurrency(event: CustomEvent): void {
     this.store.dispatch(SettingsActions.updateCurrency({ currency: event.detail.value }));
+    this.storageService.saveState(event.detail.value, 'settings/currency');
   }
 
   openPage(page: string): void {

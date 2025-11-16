@@ -3,7 +3,6 @@ import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
 import { Store } from '@ngrx/store';
 import { AES } from 'crypto-js';
 import { firstValueFrom, take } from 'rxjs';
-import { ISettings } from 'src/app/interfaces/settings.interface.js';
 import CryptoJS from 'crypto-js';
 import * as SettingsSelectors from 'src/app/state/selectors/settings.selectors';
 
