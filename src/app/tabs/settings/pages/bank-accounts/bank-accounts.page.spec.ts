@@ -1,11 +1,26 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideStore } from '@ngrx/store';
+import { bankAccountReducer } from 'src/app/state/reducers/bank-account.reducer';
+import { transactionReducer } from 'src/app/state/reducers/transaction.reducer';
+import { settingsReducer } from 'src/app/state/reducers/settings.reducer';
 import { BankAccountsPage } from './bank-accounts.page';
 
 describe('BankAccountsPage', () => {
   let component: BankAccountsPage;
   let fixture: ComponentFixture<BankAccountsPage>;
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [BankAccountsPage],
+      providers: [
+        provideStore({
+          bankAccounts: bankAccountReducer,
+          transactions: transactionReducer,
+          settings: settingsReducer
+        })
+      ]
+    }).compileComponents();
+    
     fixture = TestBed.createComponent(BankAccountsPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
