@@ -3,16 +3,15 @@ import { provideStore } from '@ngrx/store';
 import { bankAccountReducer } from 'src/app/state/reducers/bank-account.reducer';
 import { transactionReducer } from 'src/app/state/reducers/transaction.reducer';
 import { settingsReducer } from 'src/app/state/reducers/settings.reducer';
+import { AuthenticatePage } from './authenticate.page';
 
-import { TransactionsPage } from './transactions.page';
-
-describe('TransactionsPage', () => {
-  let component: TransactionsPage;
-  let fixture: ComponentFixture<TransactionsPage>;
+describe('AuthenticatePage', () => {
+  let component: AuthenticatePage;
+  let fixture: ComponentFixture<AuthenticatePage>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TransactionsPage],
+      imports: [AuthenticatePage],
       providers: [
         provideStore({
           bankAccounts: bankAccountReducer,
@@ -22,7 +21,7 @@ describe('TransactionsPage', () => {
       ]
     }).compileComponents();
     
-    fixture = TestBed.createComponent(TransactionsPage);
+    fixture = TestBed.createComponent(AuthenticatePage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { PickFilesResult } from '@capawesome/capacitor-file-picker';
-import { Buffer } from 'buffer';
 import { ITransaction } from '../interfaces/transaction.interface';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -16,7 +15,7 @@ export class TransactionsService {
 
   decodeBase64(str: string): string {
     try {
-      return Buffer.from(str, 'base64').toString('binary');
+      return atob(str);
     } catch (e) {
       console.error('Error decoding base64 string:', e);
       return str; // Return the original string if decoding fails

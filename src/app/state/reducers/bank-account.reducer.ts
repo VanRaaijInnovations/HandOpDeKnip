@@ -15,9 +15,9 @@ export const initialState: IBankAccount[] = [{
 
 export const bankAccountReducer = createReducer(
   initialState,
-  on(AddBankAccount, (state, { bankAccount }) => [...state, bankAccount]),
-  on(RemoveBankAccount, (state, { id }) => state.filter(account => account.id !== id)),
-  on(UpdateBankAccount, (state, { bankAccount }) => {
+  on(AddBankAccount, (state, { bankAccount }): IBankAccount[] => [...state, bankAccount]),
+  on(RemoveBankAccount, (state, { id }): IBankAccount[] => state.filter(account => account.id !== id)),
+  on(UpdateBankAccount, (state, { bankAccount }): IBankAccount[] => {
     return state.map(account =>
       account.id === bankAccount.id ? { ...account, ...bankAccount } : account
     );

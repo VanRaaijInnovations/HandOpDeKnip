@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   IonHeader,
@@ -19,17 +19,19 @@ import {
   IonModal,
   IonDatetime
 } from '@ionic/angular/standalone';
-import { map, Observable } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 import { ITransaction } from 'src/app/interfaces/transaction.interface';
 import { Store } from '@ngrx/store';
 import { addIcons } from 'ionicons';
 import { addOutline, removeOutline } from 'ionicons/icons';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
 import type { OverlayEventDetail } from '@ionic/core';
-import { ISettings } from 'src/app/interfaces/settings.interface';
 import { TransactionsService } from 'src/app/services/transactions.service';
-import { ITransactionsState } from 'src/app/interfaces/transactions-state.interface.js';
 import { Router } from '@angular/router';
+import { StorageService } from 'src/app/services/infrastructure/storage.service';
+import * as TransactionActions from 'src/app/state/actions/transaction.actions';
+import * as TransactionSelectors from 'src/app/state/selectors/transaction.selectors';
+import * as SettingsSelectors from 'src/app/state/selectors/settings.selectors';
 
 @Component({
   selector: 'app-transactions',
@@ -57,7 +59,7 @@ import { Router } from '@angular/router';
   ],
 })
 
-export class TransactionsPage {
+export class TransactionsPage implements OnInit {
   public actionSheetButtons = [
     {
       text: 'Import transactions (TXT/TAB)',
@@ -80,18 +82,25 @@ export class TransactionsPage {
   loading: boolean = false;
   currency: string = 'EUR';
   $transactions: Observable<ITransaction[]>;
+  
+  private store = inject(Store);
+  private transactionsService = inject(TransactionsService);
+  private router = inject(Router);
+  private storageService = inject(StorageService);
 
-  constructor(
-    private store: Store<{ transactions: ITransactionsState; settings: ISettings }>,
-    private transactionsService: TransactionsService,
-    private router: Router
-  ) {
+  constructor() {
     addIcons({ addOutline, removeOutline });
-    this.store.select(state => state.settings).subscribe((settings) => {
-      this.currency = settings.currency;
+    this.store.select(SettingsSelectors.selectCurrency).pipe(take(1)).subscribe((currency: string) => {
+      this.currency = currency;
     });
+    this.$transactions = this.store.select(TransactionSelectors.selectAllTransactions);
+  }
 
-    this.$transactions = this.store.select(state => state.transactions.transactions);
+  async ngOnInit(): Promise<void> {
+    const transactions = await this.storageService.loadState<ITransaction[]>('transactions');
+    if (transactions && transactions.length > 0) {
+      this.store.dispatch(TransactionActions.AddTransactions({ transactions }));
+    }
   }
 
   actionPicked(event: CustomEvent<OverlayEventDetail>): void {
@@ -115,7 +124,8 @@ export class TransactionsPage {
 
       let transactions = await this.transactionsService.importTransactions(result);
       if (transactions && transactions.length > 0) {
-        this.store.dispatch({ type: '[Transaction] Add Transactions', transactions });
+        this.store.dispatch(TransactionActions.AddTransactions({ transactions }));
+        await this.storageService.saveState(transactions, 'transactions');
       } else {
         console.warn('No transactions were imported.');
       }
@@ -128,9 +138,9 @@ export class TransactionsPage {
 
   updateStartDate(event: CustomEvent): void {
     this.startDate = event.detail.value;
-    this.$transactions = this.store.select(state => state.transactions.transactions).pipe(
+    this.$transactions = this.store.select(TransactionSelectors.selectAllTransactions).pipe(
       map(transactions =>
-        transactions.filter(transaction => {
+        transactions.filter((transaction: ITransaction) => {
           const transactionDate = new Date(transaction.date);
           return transactionDate >= new Date(this.startDate) && transactionDate < new Date(this.endDate);
         })
@@ -140,9 +150,9 @@ export class TransactionsPage {
 
   updateEndDate(event: CustomEvent): void {
     this.endDate = event.detail.value;
-    this.$transactions = this.store.select(state => state.transactions.transactions).pipe(
+    this.$transactions = this.store.select(TransactionSelectors.selectAllTransactions).pipe(
       map(transactions =>
-        transactions.filter(transaction => {
+        transactions.filter((transaction: ITransaction) => {
           const transactionDate = new Date(transaction.date);
           return transactionDate >= new Date(this.startDate) && transactionDate < new Date(this.endDate);
         })

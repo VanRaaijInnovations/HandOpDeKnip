@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonItem, IonLabel } from '@ionic/angular/standalone';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ITransaction } from 'src/app/interfaces/transaction.interface';
-import { select, Store } from '@ngrx/store';
-import { ITransactionsState } from 'src/app/interfaces/transactions-state.interface';
-import { ISettings } from 'src/app/interfaces/settings.interface.js';
+import { Store } from '@ngrx/store';
 import localeNl from '@angular/common/locales/nl';
+import * as SettingsSelectors from 'src/app/state/selectors/settings.selectors';
+import * as TransactionSelectors from 'src/app/state/selectors/transaction.selectors';
 
 registerLocaleData(localeNl, 'nl-NL');
 
@@ -22,27 +22,20 @@ registerLocaleData(localeNl, 'nl-NL');
 export class TransactionViewPage implements OnInit {
 
   $transaction?: Observable<ITransaction | undefined>;
+  $currency: Observable<string>;
+  private route = inject(ActivatedRoute);
+  private store = inject(Store);
 
-  constructor(
-    private route: ActivatedRoute,
-    private store: Store<{   transactions: ITransactionsState, settings: ISettings }>,
-  ) {
+  constructor() {
+    this.$currency = this.store.select(SettingsSelectors.selectCurrency);
   }
 
   ngOnInit() {
     this.route.queryParamMap.subscribe(params => {
       const transactionId = params.get('transactionId');
-      this.$transaction = this.store.select(state => state.transactions.transactions.find(transaction => transaction.id === transactionId));
-    });
-  }
-
-  getCurrency(): string {
-    let currency: string = 'EUR'; // Default currency
-    this.store.select(state => state.settings).subscribe(settings => {
-      if (settings && settings.currency) {
-        currency = settings.currency;
+      if (transactionId) {
+        this.$transaction = this.store.select(TransactionSelectors.selectTransactionById(transactionId));
       }
     });
-    return currency;
   }
 }
