@@ -5,9 +5,7 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonItem, IonLabel
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ITransaction } from 'src/app/interfaces/transaction.interface';
-import { select, Store } from '@ngrx/store';
-import { ITransactionsState } from 'src/app/interfaces/transactions-state.interface';
-import { ISettings } from 'src/app/interfaces/settings.interface.js';
+import { Store } from '@ngrx/store';
 import localeNl from '@angular/common/locales/nl';
 import * as SettingsSelectors from 'src/app/state/selectors/settings.selectors';
 import * as TransactionSelectors from 'src/app/state/selectors/transaction.selectors';
