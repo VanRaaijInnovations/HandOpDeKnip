@@ -3,7 +3,7 @@ import { IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { StorageService } from 'src/app/services/infrastructure/storage.service.js';
+import { StorageService } from 'src/app/services/infrastructure/storage.service';
 import * as SettingsActions from 'src/app/state/actions/settings.actions';
 import * as SettingsSelectors from 'src/app/state/selectors/settings.selectors';
 

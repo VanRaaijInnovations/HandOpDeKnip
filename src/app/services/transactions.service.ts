@@ -15,7 +15,7 @@ export class TransactionsService {
 
   decodeBase64(str: string): string {
     try {
-      return Buffer.from(str, 'base64').toString('binary');
+      return atob(str);
     } catch (e) {
       console.error('Error decoding base64 string:', e);
       return str; // Return the original string if decoding fails
