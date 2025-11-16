@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonSelect, IonSelectOption } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -13,7 +13,7 @@ import * as SettingsSelectors from 'src/app/state/selectors/settings.selectors';
   styleUrls: ['settings.page.scss'],
   imports: [IonHeader, IonToolbar, IonTitle, IonList, IonItem, IonLabel, IonContent, IonSelect, IonSelectOption],
 })
-export class SettingsPage {
+export class SettingsPage implements OnInit {
   $currency: Observable<string>;
   private router = inject(Router);
   private store = inject(Store);
