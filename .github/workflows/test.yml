@@ -32,10 +32,6 @@ jobs:
       run: npm run lint
       if: always()
 
-    - name: Build application
-      run: npm run build
-      if: always()
-
     - name: Run tests
       run: npm test -- --watch=false --code-coverage --browsers=ChromeHeadlessCI
       if: always()
@@ -46,7 +42,7 @@ jobs:
       id: code-coverage-summary
       uses: irongut/CodeCoverageSummary@v1.3.0
       with:
-        filename: ./coverage/lcov.info
+        filename: '**/coverage/lcov.info'
         fail_below_min: true
         format: markdown
         hide_branch_rate: false
