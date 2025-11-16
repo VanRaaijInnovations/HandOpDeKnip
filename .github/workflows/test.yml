@@ -42,7 +42,7 @@ jobs:
       if: always()
 
     - name: Run tests
-      run: npm test -- --watch=false --code-coverage --browsers=ChromeHeadlessCI --log-level=debug
+      run: npm test -- --watch=false --code-coverage --browsers=ChromeHeadlessCI
       if: always()
       env:
         CI: true
