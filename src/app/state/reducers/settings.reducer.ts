@@ -10,12 +10,12 @@ export const initialSettingsState: ISettings = {
 
 export const settingsReducer = createReducer(
   initialSettingsState,
-  on(SettingsActions.setSettings, (state, { settings }) => ({ ...state, ...settings })),
-  on(SettingsActions.updateCurrency, (state, currency ) => ({
+  on(SettingsActions.setSettings, (state, { settings }): ISettings => ({ ...state, ...settings })),
+  on(SettingsActions.updateCurrency, (state, currency ): ISettings => ({
     ...state,
     currency: currency.currency
   })),
-  on(SettingsActions.setPrivateKeyPassword, (state, { privateKeyPassword, salt }) => ({
+  on(SettingsActions.setPrivateKeyPassword, (state, { privateKeyPassword, salt }): ISettings => ({
     ...state,
     privateKeyPassword,
     salt

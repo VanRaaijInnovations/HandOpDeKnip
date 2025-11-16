@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
 import { Store } from '@ngrx/store';
 import { AES } from 'crypto-js';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, take } from 'rxjs';
 import { ISettings } from 'src/app/interfaces/settings.interface.js';
 import CryptoJS from 'crypto-js';
+import * as SettingsSelectors from 'src/app/state/selectors/settings.selectors';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,9 @@ import CryptoJS from 'crypto-js';
 export class StorageService {
 
   readonly AppDir = '/HandOpDeKnip/storage'
+  private store = inject(Store);
 
-  constructor(
-    private store: Store<{ settings: ISettings }>
-  ) {
+  constructor() {
     Filesystem.checkPermissions().then((result) => {
       if (result.publicStorage === 'denied') {
         console.warn('Public storage permissions denied, requesting permissions...');
@@ -42,21 +42,20 @@ export class StorageService {
 
   async saveState<Type>(object: Type, fileName: string): Promise<void> {
     try {
-      this.store.select(state => state.settings.privateKeyPassword).subscribe(async passwordHash => {
-        if (!passwordHash) {
-          return;
-        }
+      const passwordHash = await firstValueFrom(this.store.select(SettingsSelectors.selectPrivateKeyPassword).pipe(take(1)));
+      if (!passwordHash) {
+        return;
+      }
 
-        const encryptedData = AES.encrypt(JSON.stringify(object), passwordHash).toString();
+      const encryptedData = AES.encrypt(JSON.stringify(object), passwordHash).toString();
 
-        let res = await Filesystem.writeFile({
-          directory: Directory.Data,
-          path: `${this.AppDir}/${fileName}`,
-          data: encryptedData,
-          encoding: Encoding.UTF8
-        });
-        console.debug('State saved successfully:', res);
-      })
+      let res = await Filesystem.writeFile({
+        directory: Directory.Data,
+        path: `${this.AppDir}/${fileName}`,
+        data: encryptedData,
+        encoding: Encoding.UTF8
+      });
+      console.debug('State saved successfully:', res);
     } catch (error) {
       console.error('Error saving state:', error);
       return;
@@ -71,7 +70,7 @@ export class StorageService {
         encoding: Encoding.UTF8
       })
 
-      const passwordHash = await firstValueFrom(this.store.select(state => state.settings.privateKeyPassword));
+      const passwordHash = await firstValueFrom(this.store.select(SettingsSelectors.selectPrivateKeyPassword));
 
       if (!passwordHash) {
         return;

@@ -8,7 +8,7 @@ export const initialState: ITransactionsState = {
 
 export const transactionReducer = createReducer(
   initialState,
-  on(AddTransactions, (state, payload) => ({
+  on(AddTransactions, (state, payload): ITransactionsState => ({
     ...state,
     transactions: [...state.transactions, ...payload.transactions]
   }))

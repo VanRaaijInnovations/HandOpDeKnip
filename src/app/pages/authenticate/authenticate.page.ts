@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonInput, IonInputPasswordToggle } from '@ionic/angular/standalone';
@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { ISettings } from 'src/app/interfaces/settings.interface.js';
 import { PBKDF2 } from 'crypto-js'
 import { Router } from '@angular/router';
+import * as SettingsActions from 'src/app/state/actions/settings.actions';
 
 @Component({
   selector: 'app-authenticate',
@@ -18,11 +19,8 @@ import { Router } from '@angular/router';
 export class AuthenticatePage {
 
   private readonly saltRounds = 10;
-
-  constructor(
-    private store: Store<{ settings: ISettings }>,
-    private router: Router
-  ) { }
+  private store = inject(Store);
+  private router = inject(Router);
 
   randomString(length: number) {
     var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -39,11 +37,7 @@ export class AuthenticatePage {
       iterations: 100
     }).toString();
 
-    this.store.dispatch({
-      type: '[Settings] Set Private Key Password',
-      privateKeyPassword: hash,
-      salt
-    });
+    this.store.dispatch(SettingsActions.setPrivateKeyPassword({ privateKeyPassword: hash, salt }));
 
     this.router.navigate(['tabs'])
   }
