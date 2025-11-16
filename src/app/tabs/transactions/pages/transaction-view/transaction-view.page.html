@@ -5,7 +5,8 @@
 </ion-header>
 
 <ion-content>
-  <ion-list *ngIf="$transaction | async">
+  @if ($transaction | async) {
+  <ion-list>
     <ion-item>
       <ion-label>
         Date: {{ ($transaction | async)?.date | date: 'short' }}
@@ -17,4 +18,5 @@
       </ion-label>
     </ion-item>
   </ion-list>
+  }
 </ion-content>

@@ -3,7 +3,9 @@
     <ion-title>
       Transactions
     </ion-title>
-    <ion-progress-bar *ngIf="loading" type="indeterminate"></ion-progress-bar>
+    @if (loading) {
+      <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    }
   </ion-toolbar>
   <ion-toolbar>
     <ion-searchbar></ion-searchbar>
@@ -20,9 +22,17 @@
       <ion-item (click)="viewTransaction(transaction.id)">
         <ion-label>
           <ion-text>
-            <ion-text color="danger" *ngIf="transaction.type === 'expense'"> - {{ transaction.amount | currency: currency }}</ion-text>
-            <ion-text color="success" *ngIf="transaction.type === 'income'"> + {{ transaction.amount | currency: currency }}</ion-text>
-            {{ transaction.description }}
+            @switch (transaction.type) {
+              @case ('expense') {
+                <ion-text color="danger"> - {{ transaction.amount | currency: currency }}</ion-text>
+              }
+              @case ('income') {
+                <ion-text color="success"> + {{ transaction.amount | currency: currency }}</ion-text>
+              }
+              @default {
+                <ion-text> {{ transaction.amount | currency: currency }}</ion-text>
+              }
+            }
           </ion-text>
         </ion-label>
       </ion-item>
