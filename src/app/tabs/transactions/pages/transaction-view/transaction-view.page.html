@@ -13,7 +13,7 @@
     </ion-item>
     <ion-item>
       <ion-label>
-        Amount: {{ ($transaction | async)?.amount | currency: getCurrency() }}
+        Amount: {{ ($transaction | async)?.amount | currency }}
       </ion-label>
     </ion-item>
   </ion-list>
