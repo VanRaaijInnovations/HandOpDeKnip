@@ -37,8 +37,12 @@ jobs:
       run: npm run lint
       if: always()
 
+    - name: Build application
+      run: npm run build
+      if: always()
+
     - name: Run tests
-      run: npm test -- --watch=false --code-coverage --browsers=ChromeHeadless
+      run: npm test -- --watch=false --code-coverage --browsers=ChromeHeadlessCI --log-level=debug
       if: always()
       env:
         CI: true
